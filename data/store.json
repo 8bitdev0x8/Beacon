@@ -601,17 +601,40 @@
     "9aa0391dafd1",
     "58eed7fc984a",
     "376ff2fba23d",
-    "603ceb112390"
+    "603ceb112390",
+    "2b498b9cccae",
+    "a8e654ba2a5e",
+    "09cb632427ba",
+    "3fa999be96a6",
+    "76d579c1aabe",
+    "90cefe610770",
+    "fdb2bbfc9612",
+    "d36427229668",
+    "35c9d0a080b7",
+    "624026002998",
+    "cf485507c2ee",
+    "4cf3b1cfc93c",
+    "9f116c6bdaf0",
+    "81d3a68e6d08",
+    "2bdbf2c39567",
+    "8c66f2d3bcde",
+    "b5112ad559ac",
+    "3f8a9a864a96",
+    "66bd8b85026f",
+    "e1545b037577",
+    "94040e57bbe7",
+    "50393d248a78",
+    "c3258247ceb1",
+    "b916839d8270"
   ],
   "pinnedFeeds": [],
   "savedFeeds": [],
   "feeds": [
-    "greenhouse:datadog",
-    "scrape:https://www.google.com/about/careers/applications/jobs/results/?location=Dublin%20Ireland&category=DATA_CENTER_OPERATIONS&category=DEVELOPER_RELATIONS&category=HARDWARE_ENGINEERING&category=MANUFACTURING_SUPPLY_CHAIN&category=NETWORK_ENGINEERING&category=PRODUCT_MANAGEMENT&category=PROGRAM_MANAGEMENT&category=SOFTWARE_ENGINEERING&category=TECHNICAL_INFRASTRUCTURE_ENGINEERING&category=TECHNICAL_SOLUTIONS&category=TECHNICAL_WRITING",
-    "scrape:https://www.google.com/about/careers/applications/jobs/results"
+    "https://analogdevices.wd1.myworkdayjobs.com/External",
+    "workday:analogdevices.wd1.External"
   ],
   "pipelineUrls": [
     "https://github.com/8bitdev0x8/Beacon/blob/Json_Pipeline/data.json"
   ],
-  "lastVisit": "2026-02-20T12:08:07.507Z"
+  "lastVisit": "2026-02-20T12:25:19.442Z"
 }

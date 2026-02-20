@@ -14,6 +14,10 @@ function feedSource(feedUrl: string): string {
     if (platform === "lever") return `jobs.lever.co/${slug}`;
     if (platform === "ashby") return `jobs.ashbyhq.com/${slug}`;
     if (platform === "smartrecruiters") return `jobs.smartrecruiters.com/${slug}`;
+    if (platform === "workday") {
+      const [company, dc, site] = slug.split(".");
+      return `${company}.${dc}.myworkdayjobs.com/${site}`;
+    }
     return feedUrl;
   }
   return feedUrl;

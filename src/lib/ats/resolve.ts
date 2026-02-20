@@ -6,9 +6,10 @@ import { fetchGreenhouse } from "./greenhouse";
 import { fetchLever } from "./lever";
 import { fetchAshby } from "./ashby";
 import { fetchSmartRecruiters } from "./smartrecruiters";
+import { fetchWorkday, parseWorkdayUrl } from "./workday";
 import { Job } from "../types";
 
-export type ATSPlatform = "greenhouse" | "lever" | "ashby" | "smartrecruiters";
+export type ATSPlatform = "greenhouse" | "lever" | "ashby" | "smartrecruiters" | "workday";
 
 // Order matters — Greenhouse and Lever are the most common for tech companies
 const PLATFORMS: { name: ATSPlatform; fetcher: (slug: string) => Promise<{ companyName: string; jobs: Job[] }> }[] = [
@@ -107,8 +108,26 @@ export interface SmartDetectResult {
   jobCount?: number;
 }
 
-// Smart URL detection: parse ATS URL → try RSS → try ATS slug → scrape page
+// Smart URL detection: Workday → ATS URL → RSS → ATS slug → scrape page
 export async function smartDetect(url: string): Promise<SmartDetectResult | null> {
+  // 0. Check for Workday URL (very distinctive pattern)
+  const wdParsed = parseWorkdayUrl(url);
+  if (wdParsed) {
+    const slug = `${wdParsed.company}.${wdParsed.dc}.${wdParsed.site}`;
+    try {
+      const result = await fetchWorkday(slug);
+      return {
+        feedKey: `workday:${slug}`,
+        type: "ats",
+        platform: "workday",
+        companyName: result.companyName,
+        jobCount: result.jobs.length,
+      };
+    } catch {
+      // Workday URL matched but fetch failed — continue cascade
+    }
+  }
+
   // 1. Check if URL matches a known ATS board pattern
   const atsMatch = parseATSUrl(url);
   if (atsMatch) {
@@ -117,6 +136,7 @@ export async function smartDetect(url: string): Promise<SmartDetectResult | null
       lever: fetchLever,
       ashby: fetchAshby,
       smartrecruiters: fetchSmartRecruiters,
+      workday: fetchWorkday,
     };
     try {
       const result = await fetchers[atsMatch.platform](atsMatch.slug);
@@ -191,7 +211,7 @@ export function parseFeedKey(
   }
   const platform = feedKey.slice(0, colonIdx) as ATSPlatform;
   const slug = feedKey.slice(colonIdx + 1);
-  if (["greenhouse", "lever", "ashby", "smartrecruiters"].includes(platform)) {
+  if (["greenhouse", "lever", "ashby", "smartrecruiters", "workday"].includes(platform)) {
     return { type: "ats", platform, slug };
   }
   // Unrecognised prefix — treat as RSS URL
@@ -215,6 +235,7 @@ export async function fetchByKey(feedKey: string): Promise<{ companyName: string
     lever: fetchLever,
     ashby: fetchAshby,
     smartrecruiters: fetchSmartRecruiters,
+    workday: fetchWorkday,
   };
   return platformFetchers[parsed.platform](parsed.slug);
 }
